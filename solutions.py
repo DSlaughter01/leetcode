@@ -1,4 +1,44 @@
 """
+151: Reverse Words in a String
+"""
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        
+        # A list of the words in s, in reverse order
+        rev_split_string = s.split()[::-1]
+
+        sol = ""
+        for i in rev_split_string:
+            # Add a word and a space
+            sol += i + " "
+        
+        # Don't return the trailing space
+        return sol[:-1]
+
+"""
+345: Reverse Vowels in a String
+"""
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+    
+        # Find the vowels
+        vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+        vowels_in_s = [i for i in s if i in vowels]
+        
+        sol = ""
+        idx = -1
+
+        for i in s:
+            if i in vowels:
+                sol += vowels_in_s[idx]
+                idx -= 1
+            else:
+                sol += i
+        
+        return sol
+
+
+"""
 605: Can place flowers
 """
 class Solution:
