@@ -1,4 +1,62 @@
 """
+1. Two Sum
+"""
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+
+        # Create a dictionary of indices and values
+        nums_dict = {}
+
+        # Construct the dictionary as and when so as to avoid repeats
+        for (idx, val) in enumerate(nums):
+
+            # Check for a pair match
+            if (target - val) in nums_dict:
+                return [nums_dict[target - val], idx]
+
+            else:
+                nums_dict[val] = idx
+
+"""
+2. Add Two Numbers
+"""
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        
+        remainder = 0
+        sol = ListNode()
+        tail = sol
+
+        # While there is a value > 0
+        while l1 or l2 or remainder:
+
+            # Account for lists of different lengths
+            l1val = l1.val if l1 else 0
+            l2val = l2.val if l2 else 0
+
+            # The sum of the 2 nodes plus the remainder, accounting for values > 9
+            addition = l1val + l2val + remainder
+            addition, remainder = addition % 10, addition // 10
+
+            # Update linked list val and next
+            new_node = ListNode(addition)
+            tail.next = new_node
+            tail = tail.next
+
+            # Move to the next node
+            if l1: l1 = l1.next
+            if l2: l2 = l2.next
+
+        sol = sol.next
+        
+        return sol
+
+"""
 151: Reverse Words in a String
 """
 class Solution:
@@ -28,6 +86,7 @@ class Solution:
         sol = ""
         idx = -1
 
+        # Add normal letters in the normal order and vowels in reverse
         for i in s:
             if i in vowels:
                 sol += vowels_in_s[idx]
@@ -76,6 +135,69 @@ class Solution:
         else: return False
 
 """
+1071: Greatest Common Divisor of Strings
+"""
+class Solution:
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+
+        # Try prefixes starting with the length of the shortest word
+        short_string = str1 if len(str1) < len(str2) else str2
+        long_string = str2 if len(str1) < len(str2) else str1
+
+        short_len, long_len = len(short_string), len(long_string)
+
+        # The shortest prefix must divide both strings evenly
+        prefix_len = short_len
+
+        while True:
+            if prefix_len == 1 and long_len % prefix_len != 0: 
+                return ""
+
+            if long_len % prefix_len == 0 and short_len % prefix_len == 0: 
+                break
+
+            else: 
+                prefix_len -= 1
+        
+        prefix = short_string[:prefix_len]
+        
+        while prefix_len > 0:
+
+            # The number of chunks to split the string into
+            str1_no_splits = int(len(str1) / prefix_len)
+            str2_no_splits = int(len(str2) / prefix_len)
+
+            # Separate the strings into a list of parts of length prefix_len
+            str1_set = set([str1[i * prefix_len: (i + 1) * prefix_len] for i in range(str1_no_splits)])
+            str2_set = set([str2[i * prefix_len: (i + 1) * prefix_len] for i in range(str2_no_splits)])
+
+            # The success criteria for finding a common prefix
+            success = len(str1_set) == 1 and str1_set == str2_set
+
+            # If the sets are the same, and their length is equal to 1, return the prefix
+            if success: 
+                prefix = list(str1_set)[0]
+                return prefix
+
+            # If the string length is 1 and no solution is found, return ""
+            if prefix_len == 1 and not success: 
+                return ""
+
+            # If not, decrease the prefix length, and repeat
+            else: 
+                prefix_len -= 1
+                while True:
+                    if prefix_len == 1 and long_len % prefix_len != 0: 
+                        return ""
+
+                    if long_len % prefix_len == 0 and short_len % prefix_len == 0:
+                        break
+
+                    else: 
+                        prefix_len -= 1
+
+                        
+"""
 1431: Kids with the Greatest Number of Candies
 """
 class Solution:
@@ -90,7 +212,6 @@ class Solution:
 """
 1768: Merge Strings Alternately
 """
-
 class Solution:
     def mergeAlternately(self, word1: str, word2: str) -> str:
         
