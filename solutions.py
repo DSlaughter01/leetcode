@@ -57,6 +57,38 @@ class Solution:
         return sol
 
 """
+19: Remove nth Node from End of List
+"""
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        
+        # Find how long the list is
+        list_length, dummy_head = 0, head
+
+        while dummy_head:
+            list_length += 1
+            dummy_head = dummy_head.next
+        
+        # Edge cases: removing the first element (length 1 and length > 1)
+        if n == list_length:
+            head = head.next
+            return head
+
+        curr, prev = head, head
+
+        # Go to the desired node, keeping track of previous
+        for i in range(list_length - n):
+
+            prev = curr
+            curr = curr.next
+        
+        # Unlink previous from desired node, and link to next one
+        nxt = curr.next
+        prev.next = nxt
+
+        return head
+
+"""
 151: Reverse Words in a String
 """
 class Solution:
@@ -196,7 +228,21 @@ class Solution:
                     else: 
                         prefix_len -= 1
 
-                        
+"""
+1137: Nth Tribonnaci Number
+"""
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        
+        t_0, t_1, t_2 = 0, 1, 1
+
+        for i in range(n):
+            t_next = t_0 + t_1 + t_2
+            t_0, t_1, t_2 = t_1, t_2, t_next
+        
+        return t_0
+
+
 """
 1431: Kids with the Greatest Number of Candies
 """
